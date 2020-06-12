@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package grpc.user;
+option go_package = "proto/userpb";
+
+message Date {
+    int32 year = 1;
+    int32 month = 2;
+    int32 day = 3;
+}
+
+message UserProto {
+    string first_name = 1;
+    string last_name = 2;
+    Date date_of_birth = 3;
+}
+
+message UserRequest {
+    string user_id = 1;
+}
+
+message UserResponse {
+    UserProto user = 1;
+}
+
+service UserService {
+    rpc FetchOne(UserRequest) returns (UserResponse) {};
+}
