@@ -1,4 +1,4 @@
-package domain
+package dto
 
 //Product is ...
 type Product struct {
@@ -6,4 +6,5 @@ type Product struct {
 	PriceInCents int64
 	Title        string
 	Description  string
+	Discount     Discount
 }

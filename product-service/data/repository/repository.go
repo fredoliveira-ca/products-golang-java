@@ -3,13 +3,11 @@ package repository
 import (
 	db "github.com/fredoliveira-ca/products-golang-java/product-service/app/config"
 	grpc "github.com/fredoliveira-ca/products-golang-java/product-service/app/grpc/client"
-	dto "github.com/fredoliveira-ca/products-golang-java/product-service/app/web/dto"
-	mapper "github.com/fredoliveira-ca/products-golang-java/product-service/data/mapper"
 	domain "github.com/fredoliveira-ca/products-golang-java/product-service/domain"
 )
 
 // FindAll is ...
-func FindAll(userID string) []dto.Product {
+func FindAll(userID string) []domain.Product {
 	db := db.ConnectDataBase()
 	defer db.Close()
 
@@ -19,7 +17,7 @@ func FindAll(userID string) []dto.Product {
 	}
 
 	product := domain.Product{}
-	products := []dto.Product{}
+	products := []domain.Product{}
 
 	for records.Next() {
 		var id, title, description string
@@ -36,23 +34,22 @@ func FindAll(userID string) []dto.Product {
 		product.PriceInCents = price
 
 		discount := grpc.CalculateDiscount(product.ID, userID)
-		productDTO := mapper.Of(product)
-		productDTO.Discount = dto.Discount{Pct: 0, ValueInCents: 0}
+		product.Discount = domain.Discount{Pct: 0, ValueInCents: 0}
 		if discount != nil {
-			productDTO.Discount = dto.Discount{
+			product.Discount = domain.Discount{
 				Pct:          discount.Pct,
 				ValueInCents: discount.ValueInCents,
 			}
 		}
 
-		products = append(products, productDTO)
+		products = append(products, product)
 	}
 
 	return products
 }
 
 // FindOne is ...
-func FindOne(id string) dto.Product {
+func FindOne(id string) domain.Product {
 	db := db.ConnectDataBase()
 	sql := "SELECT * FROM product WHERE product_id=$1;"
 	records, err := db.Query(sql, id)
@@ -78,5 +75,5 @@ func FindOne(id string) dto.Product {
 	}
 
 	defer db.Close()
-	return mapper.Of(product)
+	return product
 }
