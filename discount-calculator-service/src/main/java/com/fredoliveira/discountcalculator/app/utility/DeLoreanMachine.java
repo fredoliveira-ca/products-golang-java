@@ -8,8 +8,7 @@ import java.time.ZoneId;
 
 import lombok.experimental.UtilityClass;
 
-@UtilityClass
-public class DeLoreanMachine {
+@UtilityClass public class DeLoreanMachine {
 
   private final ZoneId zoneId = ZoneId.systemDefault();
   private Clock clock = Clock.systemDefaultZone();
