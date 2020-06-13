@@ -35,7 +35,7 @@ func FindAll(userID string) []dto.Product {
 		product.Description = description
 		product.PriceInCents = price
 
-		discount := grpc.CalculateDicount(product.ID, userID)
+		discount := grpc.CalculateDiscount(product.ID, userID)
 		productDTO := mapper.Of(product)
 		productDTO.Discount = dto.Discount{Pct: 0, ValueInCents: 0}
 		if discount != nil {
@@ -47,7 +47,7 @@ func FindAll(userID string) []dto.Product {
 
 		products = append(products, productDTO)
 	}
-	
+
 	return products
 }
 
