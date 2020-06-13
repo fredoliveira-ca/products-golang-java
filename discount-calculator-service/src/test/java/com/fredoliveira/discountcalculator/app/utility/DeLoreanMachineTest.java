@@ -12,12 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @DisplayName("Runs all tests for utility layer of time machine")
-public class BackToTheFutureMachineTest {
+public class DeLoreanMachineTest {
 
   @Test
   @DisplayName("should return today")
   void getToday() {
-    final var today = BackToTheFutureMachine.today();
+    final var today = DeLoreanMachine.getToday();
 
     assertEquals(now(), today);
   }
@@ -27,11 +27,11 @@ public class BackToTheFutureMachineTest {
   void returnToToday() {
     LocalDate date = LocalDate.of(2020, SEPTEMBER, 15);
 
-    BackToTheFutureMachine.travelTo(date);
-    assertEquals(date, BackToTheFutureMachine.today());
+    DeLoreanMachine.travelTo(date);
+    assertEquals(date, DeLoreanMachine.getToday());
 
-    BackToTheFutureMachine.travelToPresentTime();
-    assertEquals(LocalDate.now(), BackToTheFutureMachine.today());
+    DeLoreanMachine.travelToPresent();
+    assertEquals(LocalDate.now(), DeLoreanMachine.getToday());
 
   }
 
@@ -40,11 +40,11 @@ public class BackToTheFutureMachineTest {
   void calculateWithoutDiscount() {
     LocalDate travelTo = LocalDate.of(1988, JUNE, 13);
 
-    BackToTheFutureMachine.travelTo(travelTo);
-    assertEquals(travelTo, BackToTheFutureMachine.today());
+    DeLoreanMachine.travelTo(travelTo);
+    assertEquals(travelTo, DeLoreanMachine.getToday());
 
-    BackToTheFutureMachine.travelToPresentTime();
-    assertNotEquals(travelTo, BackToTheFutureMachine.today());
+    DeLoreanMachine.travelToPresent();
+    assertNotEquals(travelTo, DeLoreanMachine.getToday());
   }
 
 }

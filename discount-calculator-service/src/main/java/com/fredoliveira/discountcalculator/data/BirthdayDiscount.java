@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 
 import com.fredoliveira.discountcalculator.app.grpc.user.FetchUserGrpc;
 import com.fredoliveira.discountcalculator.app.service.DiscountFinder;
+import com.fredoliveira.discountcalculator.app.utility.DeLoreanMachine;
 
 import static java.math.BigDecimal.valueOf;
-import static java.time.LocalDate.now;
 
 public class BirthdayDiscount implements DiscountFinder {
 
@@ -29,7 +29,7 @@ public class BirthdayDiscount implements DiscountFinder {
 
   private boolean isUserBirthDay() {
     try {
-      return now().isEqual(new FetchUserGrpc().fetchBy(userId).getDateOfBirth());
+      return DeLoreanMachine.getToday().isEqual(new FetchUserGrpc().fetchBy(userId).getDateOfBirth());
     } catch (Exception e) {
       log.info("gRPC user server is down.");
       return false;

@@ -3,10 +3,10 @@ package com.fredoliveira.discountcalculator.data;
 import java.math.BigDecimal;
 
 import com.fredoliveira.discountcalculator.app.service.DiscountFinder;
+import com.fredoliveira.discountcalculator.app.utility.DeLoreanMachine;
 
 import static com.fredoliveira.discountcalculator.domain.Promotion.BLACK_FRIDAY;
 import static java.math.BigDecimal.valueOf;
-import static java.time.LocalDate.now;
 
 public class BlackFridayDiscount implements DiscountFinder {
 
@@ -20,7 +20,7 @@ public class BlackFridayDiscount implements DiscountFinder {
   }
 
   private boolean isBlackFriday() {
-    return now().isEqual(BLACK_FRIDAY.getPromotionDate());
+    return DeLoreanMachine.getToday().isEqual(BLACK_FRIDAY.getPromotionDate());
   }
 
 }

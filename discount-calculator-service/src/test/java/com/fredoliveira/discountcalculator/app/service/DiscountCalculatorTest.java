@@ -1,4 +1,4 @@
-package com.fredoliveira.discountcalculator.service;
+package com.fredoliveira.discountcalculator.app.service;
 
 import java.time.LocalDate;
 
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @DisplayName("Runs all tests for service layer of discount calculator")
-public class DiscountServiceTest {
+public class DiscountCalculatorTest {
 
   private final FetchProductGrpc productGrpc = mock(FetchProductGrpc.class);
   private final FetchUserGrpc userGrpc = mock(FetchUserGrpc.class);
@@ -31,7 +31,7 @@ public class DiscountServiceTest {
 
   @Test
   @DisplayName("should calculate and retun no discount")
-  void calculateDiscount() {
+  void calculateWithoutDiscount() {
     final var product = Product.builder()
       .id("234").priceInCents(1000L)
       .build();
@@ -42,6 +42,22 @@ public class DiscountServiceTest {
 
     when(productGrpc.fetchBy(any())).thenReturn(product);
     when(userGrpc.fetchBy(any())).thenReturn(user);
+
+    final var discount = service.calculateDiscount(product.getPriceInCents(), user.getId());
+
+    assertEquals(ZERO, discount.getPercentage());
+  }
+
+  @Test
+  @DisplayName("should calculate and retun a black friday discount")
+  void calculateBlackFridayDiscount() {
+    final var product = Product.builder()
+      .id("234").priceInCents(1000L)
+      .build();
+
+    final var user = User.builder()
+      .id("123").dateOfBirth(LocalDate.of(1988, FEBRUARY, 19))
+      .build();
 
     final var discount = service.calculateDiscount(product.getPriceInCents(), user.getId());
 

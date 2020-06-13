@@ -9,16 +9,16 @@ import java.time.ZoneId;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class BackToTheFutureMachine {
+public class DeLoreanMachine {
 
   private final ZoneId zoneId = ZoneId.systemDefault();
   private Clock clock = Clock.systemDefaultZone();
 
-  public LocalDate today() {
+  public LocalDate getToday() {
     return LocalDate.now(getClock());
   }
 
-  public void travelToPresentTime() {
+  public void travelToPresent() {
     clock = Clock.systemDefaultZone();
   }
 
