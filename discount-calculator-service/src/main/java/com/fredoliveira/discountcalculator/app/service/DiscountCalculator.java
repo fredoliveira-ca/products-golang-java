@@ -11,31 +11,32 @@ import static java.math.BigDecimal.valueOf;
 import static java.util.Arrays.stream;
 
 public class DiscountCalculator {
-    public static final BigDecimal LIMIT_DISCOUNT = valueOf(0.10);
-    public static final BigDecimal DEFAULT_DISCOUNT = valueOf(0);
 
-    public Discount calculateDiscount(Long priceInCents, String userId) {
-        final var totalDiscount = stream(Promotion.values())
-                .map(promotion -> of(promotion, userId).getDiscount())
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+  public static final BigDecimal LIMIT_DISCOUNT = valueOf(0.10);
+  public static final BigDecimal DEFAULT_DISCOUNT = valueOf(0);
 
-        var discount = DEFAULT_DISCOUNT;
-        if(totalDiscount.compareTo(DEFAULT_DISCOUNT) > 0) {
-            discount = LIMIT_DISCOUNT.max(totalDiscount).min(LIMIT_DISCOUNT);
-        }
+  public Discount calculateDiscount(Long priceInCents, String userId) {
+    final var totalDiscount = stream(Promotion.values())
+        .map(promotion -> of(promotion, userId).getDiscount())
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        return Discount.builder()
-                .percentage(discount)
-                .valueInCents(getNewValue(priceInCents, discount))
-                .build();
+    var discount = DEFAULT_DISCOUNT;
+    if (totalDiscount.compareTo(DEFAULT_DISCOUNT) > 0) {
+      discount = LIMIT_DISCOUNT.max(totalDiscount).min(LIMIT_DISCOUNT);
     }
 
-    private Long getNewValue(Long priceInCents, BigDecimal discount) {
-        return MoneyUtils.toCents(
-                valueOf(priceInCents)
-                        .multiply(discount)
-                        .divide(valueOf(100))
-        );
-    }
+    return Discount.builder()
+        .percentage(discount)
+        .valueInCents(getNewValue(priceInCents, discount))
+        .build();
+  }
+
+  private Long getNewValue(Long priceInCents, BigDecimal discount) {
+    return MoneyUtils.toCents(
+      valueOf(priceInCents)
+        .multiply(discount)
+        .divide(valueOf(100))
+    );
+  }
 
 }

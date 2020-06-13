@@ -9,7 +9,7 @@ import lombok.Getter;
 @Builder
 public class Discount {
 
-    private final BigDecimal percentage;
-    private final Long valueInCents;
+  private final BigDecimal percentage;
+  private final Long valueInCents;
 
 }

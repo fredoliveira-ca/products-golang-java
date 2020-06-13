@@ -21,31 +21,31 @@ import static org.mockito.Mockito.when;
 @DisplayName("Runs all tests for service layer of discount calculator")
 public class DiscountServiceTest {
 
-    private DiscountCalculator service;
-    private final FetchProductGrpc productGrpc = mock(FetchProductGrpc.class);;
-    private final FetchUserGrpc userGrpc = mock(FetchUserGrpc.class);
+  private final FetchProductGrpc productGrpc = mock(FetchProductGrpc.class);
+  private final FetchUserGrpc userGrpc = mock(FetchUserGrpc.class);
+  private DiscountCalculator service;
 
-    @BeforeEach
-    void beforeEach() {
-        service = new DiscountCalculator();
-    }
+  @BeforeEach void beforeEach() {
+    service = new DiscountCalculator();
+  }
 
-    @Test
-    @DisplayName("should calculate and retun no discount")
-    void calculateDiscount() {
-        final var product = Product.builder()
-                .id("234").priceInCents(1000L)
-                .build();
+  @Test
+  @DisplayName("should calculate and retun no discount")
+  void calculateDiscount() {
+    final var product = Product.builder()
+      .id("234").priceInCents(1000L)
+      .build();
 
-        final var user = User.builder()
-                .id("123").dateOfBirth(LocalDate.of(1988, FEBRUARY, 19))
-                .build();
+    final var user = User.builder()
+      .id("123").dateOfBirth(LocalDate.of(1988, FEBRUARY, 19))
+      .build();
 
-        when(productGrpc.fetchBy(any())).thenReturn(product);
-        when(userGrpc.fetchBy(any())).thenReturn(user);
+    when(productGrpc.fetchBy(any())).thenReturn(product);
+    when(userGrpc.fetchBy(any())).thenReturn(user);
 
-        final var discount = service.calculateDiscount(product.getPriceInCents(), user.getId());
+    final var discount = service.calculateDiscount(product.getPriceInCents(), user.getId());
 
-        assertEquals(ZERO, discount.getPercentage());
-    }
+    assertEquals(ZERO, discount.getPercentage());
+  }
+
 }

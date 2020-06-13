@@ -6,14 +6,15 @@ option java_package = "io.grpc.product";
 package grpc.product;
 
 message ProductPriceRequest {
-    string product_id = 1;
+  string product_id = 1;
 }
 
 message ProductPriceResponse {
-    int64 value_in_cents = 1;
+  int64 value_in_cents = 1;
 }
 
 service ProductPriceService {
-    rpc FetchOne(ProductPriceRequest) returns (ProductPriceResponse) {};
+  rpc FetchOne (ProductPriceRequest) returns (ProductPriceResponse) {
+  };
 }
 

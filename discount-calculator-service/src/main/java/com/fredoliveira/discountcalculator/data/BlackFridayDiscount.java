@@ -9,18 +9,18 @@ import static java.math.BigDecimal.valueOf;
 import static java.time.LocalDate.now;
 
 public class BlackFridayDiscount implements DiscountFinder {
-    public static final BigDecimal BLACK_FRIDAY_DISCOUNT = valueOf(0.10);
 
-    @Override
-    public BigDecimal getDiscount() {
-        if(isBlackFriday()) {
-            return BLACK_FRIDAY_DISCOUNT;
-        }
-        return BigDecimal.ZERO;
-    }
+  public static final BigDecimal BLACK_FRIDAY_DISCOUNT = valueOf(0.10);
 
-    private boolean isBlackFriday() {
-        return now().isEqual(BLACK_FRIDAY.getPromotionDate());
+  @Override public BigDecimal getDiscount() {
+    if (isBlackFriday()) {
+      return BLACK_FRIDAY_DISCOUNT;
     }
+    return BigDecimal.ZERO;
+  }
+
+  private boolean isBlackFriday() {
+    return now().isEqual(BLACK_FRIDAY.getPromotionDate());
+  }
 
 }

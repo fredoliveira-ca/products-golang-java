@@ -8,28 +8,28 @@ import io.grpc.product.ProductPriceResponse;
 import io.grpc.product.ProductPriceServiceGrpc;
 
 public class FetchProductGrpc {
-    public static final String ADDRESS = "localhost";
-    public static final int PORT = 50051;
+  public static final String ADDRESS = "localhost";
+  public static final int PORT = 50051;
 
-    public Product fetchBy(String productId) {
-        ManagedChannel channel = ManagedChannelBuilder.forAddress(ADDRESS, PORT)
-                .usePlaintext()
-                .build();
+  public Product fetchBy(String productId) {
+    ManagedChannel channel = ManagedChannelBuilder.forAddress(ADDRESS, PORT)
+        .usePlaintext()
+        .build();
 
-        ProductPriceServiceGrpc.ProductPriceServiceBlockingStub stub
-                = ProductPriceServiceGrpc.newBlockingStub(channel);
+    ProductPriceServiceGrpc.ProductPriceServiceBlockingStub stub
+      = ProductPriceServiceGrpc.newBlockingStub(channel);
 
-        ProductPriceResponse response = stub.fetchOne(
-                ProductPriceRequest.newBuilder()
-                        .setProductId(productId)
-                        .build()
-        );
+    ProductPriceResponse response = stub.fetchOne(
+      ProductPriceRequest.newBuilder()
+          .setProductId(productId)
+          .build()
+    );
 
-        channel.shutdown();
+    channel.shutdown();
 
-        return Product.builder()
-                .id(productId)
-                .priceInCents(response.getValueInCents())
-                .build();
-    }
+    return Product.builder()
+        .id(productId)
+        .priceInCents(response.getValueInCents())
+        .build();
+  }
 }

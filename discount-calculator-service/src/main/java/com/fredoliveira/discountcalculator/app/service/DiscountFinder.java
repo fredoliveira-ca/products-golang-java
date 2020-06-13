@@ -4,6 +4,6 @@ import java.math.BigDecimal;
 
 public interface DiscountFinder {
 
-    BigDecimal getDiscount();
+  BigDecimal getDiscount();
 
 }

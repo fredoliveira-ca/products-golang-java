@@ -1,7 +1,7 @@
 plugins {
-	id 'com.google.protobuf' version '0.8.8'
-	id 'java'
-	id 'idea'
+  id 'java'
+  id 'idea'
+  id 'com.google.protobuf' version '0.8.8'
 }
 
 group = 'com.fredoliveira'
@@ -10,45 +10,45 @@ sourceCompatibility = '14'
 targetCompatibility = '14'
 
 repositories {
-	mavenCentral()
+  mavenCentral()
 }
 
 sourceSets {
-	integrationTest {
-		compileClasspath += sourceSets.main.output
-		runtimeClasspath += sourceSets.main.output
-	}
+  integrationTest {
+    compileClasspath += sourceSets.main.output
+    runtimeClasspath += sourceSets.main.output
+  }
 }
 
 dependencies {
-	implementation 'io.grpc:grpc-netty-shaded:1.30.0'
-	implementation 'io.grpc:grpc-protobuf:1.30.0'
-	implementation 'io.grpc:grpc-stub:1.30.0'
+  implementation 'io.grpc:grpc-netty-shaded:1.30.0'
+  implementation 'io.grpc:grpc-protobuf:1.30.0'
+  implementation 'io.grpc:grpc-stub:1.30.0'
 
-	compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
-	compileOnly 'org.projectlombok:lombok:1.18.12'
-	annotationProcessor 'org.projectlombok:lombok:1.18.12'
+  compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
+  compileOnly 'org.projectlombok:lombok:1.18.12'
+  annotationProcessor 'org.projectlombok:lombok:1.18.12'
 
-	testCompile "org.junit.jupiter:junit-jupiter:5.6.2"
-	testCompile "org.mockito:mockito-junit-jupiter:3.3.3"
+  testCompile "org.junit.jupiter:junit-jupiter:5.6.2"
+  testCompile "org.mockito:mockito-junit-jupiter:3.3.3"
 }
 
 protobuf {
-	protoc {
-		artifact = "com.google.protobuf:protoc:3.12.0"
-	}
-	plugins {
-		grpc {
-			artifact = 'io.grpc:protoc-gen-grpc-java:1.30.0'
-		}
-	}
-	generateProtoTasks {
-		all()*.plugins {
-			grpc {}
-		}
-	}
+  protoc {
+    artifact = "com.google.protobuf:protoc:3.12.0"
+  }
+  plugins {
+    grpc {
+      artifact = 'io.grpc:protoc-gen-grpc-java:1.30.0'
+    }
+  }
+  generateProtoTasks {
+    all()*.plugins {
+      grpc {}
+    }
+  }
 }
 
 test {
-	useJUnitPlatform()
+  useJUnitPlatform()
 }

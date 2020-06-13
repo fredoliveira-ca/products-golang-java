@@ -9,9 +9,9 @@ import lombok.Getter;
 @Getter
 public class User {
 
-    private final String id;
-    private final String firstName;
-    private final String lastName;
-    private final LocalDate dateOfBirth;
+  private final String id;
+  private final String firstName;
+  private final String lastName;
+  private final LocalDate dateOfBirth;
 
 }
