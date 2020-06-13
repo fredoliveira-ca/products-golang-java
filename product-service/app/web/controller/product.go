@@ -1,22 +1,24 @@
 package controller
 
 import (
+	"encoding/json"
 	"net/http"
 
-	"github.com/fredoliveira-ca/products-golang-java/product-service/app/web/service"
+	service "github.com/fredoliveira-ca/products-golang-java/product-service/app/web/service"
 )
 
 // ListProducts is ..
 func ListProducts(w http.ResponseWriter, r *http.Request) {
 	keys := r.URL.Query()["user"]
-	
-	list, err := service.FetchAll(keys)
+
+	products := service.FetchAll(keys)
+
+	jsonList, err := json.Marshal(products)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(200)
-	w.Write(list)
+	w.WriteHeader(http.StatusOK)
+	w.Write(jsonList)
 }
