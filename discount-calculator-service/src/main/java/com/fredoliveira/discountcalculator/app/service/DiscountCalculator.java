@@ -2,7 +2,6 @@ package com.fredoliveira.discountcalculator.app.service;
 
 import java.math.BigDecimal;
 
-import com.fredoliveira.discountcalculator.app.utility.MoneyUtils;
 import com.fredoliveira.discountcalculator.domain.Discount;
 import com.fredoliveira.discountcalculator.domain.Promotion;
 
@@ -25,18 +24,8 @@ public class DiscountCalculator {
       discount = LIMIT_DISCOUNT.max(totalDiscount).min(LIMIT_DISCOUNT);
     }
 
-    return Discount.builder()
-        .percentage(discount)
-        .valueInCents(getNewValue(priceInCents, discount))
-        .build();
-  }
-
-  private Long getNewValue(Long priceInCents, BigDecimal discount) {
-    return MoneyUtils.toCents(
-      valueOf(priceInCents)
-        .multiply(discount)
-        .divide(valueOf(100))
-    );
+    return Discount.builder().build()
+        .calculate(priceInCents, discount);
   }
 
 }
