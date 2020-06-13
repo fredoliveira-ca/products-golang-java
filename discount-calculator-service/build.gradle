@@ -1,6 +1,4 @@
 plugins {
-	id 'org.springframework.boot' version '2.3.0.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'com.google.protobuf' version '0.8.8'
 	id 'java'
 	id 'idea'
@@ -26,9 +24,11 @@ dependencies {
 	implementation 'io.grpc:grpc-netty-shaded:1.30.0'
 	implementation 'io.grpc:grpc-protobuf:1.30.0'
 	implementation 'io.grpc:grpc-stub:1.30.0'
+
 	compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok:1.18.12'
+	annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
 	testCompile "org.junit.jupiter:junit-jupiter:5.6.2"
 	testCompile "org.mockito:mockito-junit-jupiter:3.3.3"
 }

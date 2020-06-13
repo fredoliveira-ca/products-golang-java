@@ -1,13 +1,11 @@
 package com.fredoliveira.discountcalculator;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.io.IOException;
 
-@SpringBootApplication
+import com.fredoliveira.discountcalculator.app.grpc.GrpcServer;
+
 public class Application {
-
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+	public static void main(String[] args) throws IOException, InterruptedException {
+		GrpcServer.start();
 	}
-
 }
