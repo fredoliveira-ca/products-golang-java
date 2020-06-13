@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.product";
+
+package grpc.product;
+
+message ProductPriceRequest {
+    string product_id = 1;
+}
+
+message ProductPriceResponse {
+    int64 value_in_cents = 1;
+}
+
+service ProductPriceService {
+    rpc FetchOne(ProductPriceRequest) returns (ProductPriceResponse) {};
+}
+
