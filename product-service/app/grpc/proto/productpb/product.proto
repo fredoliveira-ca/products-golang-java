@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package grpc.product;
+option go_package = "proto/productpb";
+
+message ProductPriceRequest {
+    string product_id = 1;
+}
+
+message ProductPriceResponse {
+    int64 value_in_cents = 1;
+}
+
+service ProductPriceService {
+    rpc FetchOne(ProductPriceRequest) returns (ProductPriceResponse) {};
+}
