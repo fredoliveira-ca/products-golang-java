@@ -27,6 +27,6 @@ import lombok.experimental.UtilityClass;
   }
 
   private Clock getClock() {
-    return clock ;
+    return clock;
   }
 }
