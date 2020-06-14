@@ -1,4 +1,4 @@
-package com.fredoliveira.discountcalculator.mock;
+package com.fredoliveira.discountcalculator.testetet.mock;
 
 import com.fredoliveira.discountcalculator.domain.Product;
 
