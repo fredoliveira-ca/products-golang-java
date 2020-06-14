@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import static java.time.LocalDate.now;
-import static java.time.Month.JUNE;
+import static java.time.Month.NOVEMBER;
 import static java.util.Objects.nonNull;
 
 @Getter
@@ -17,7 +17,7 @@ import static java.util.Objects.nonNull;
 public enum Promotion {
 
   BIRTHDAY("desc", BigDecimal.valueOf(0.05), null, null),
-  BLACK_FRIDAY("desc", BigDecimal.valueOf(0.10), JUNE, 11);
+  BLACK_FRIDAY("desc", BigDecimal.valueOf(0.10), NOVEMBER, 25);
 
   private final String description;
   private final BigDecimal discount;
@@ -25,7 +25,7 @@ public enum Promotion {
   private final Integer day;
 
   public LocalDate getPromotionDate() {
-    if(nonNull(this.getDay()) && nonNull(this.getMonth())) {
+    if (nonNull(this.getDay()) && nonNull(this.getMonth())) {
       return LocalDate.of(now().getYear(), this.getMonth(), this.getDay());
     } else {
       throw new PromotionDateException();

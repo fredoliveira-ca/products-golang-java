@@ -12,6 +12,9 @@ import static java.math.BigDecimal.valueOf;
 @Builder
 public class Discount {
 
+  public static final BigDecimal LIMIT_DISCOUNT = valueOf(0.10);
+  public static final BigDecimal DEFAULT_DISCOUNT = valueOf(0);
+
   private final BigDecimal percentage;
   private final Long valueInCents;
 
