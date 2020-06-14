@@ -13,23 +13,23 @@ public class FetchProductGrpc {
 
   public Product fetchBy(String productId) {
     ManagedChannel channel = ManagedChannelBuilder.forAddress(ADDRESS, PORT)
-        .usePlaintext()
-        .build();
+      .usePlaintext()
+      .build();
 
     ProductPriceServiceGrpc.ProductPriceServiceBlockingStub stub
       = ProductPriceServiceGrpc.newBlockingStub(channel);
 
     ProductPriceResponse response = stub.fetchOne(
       ProductPriceRequest.newBuilder()
-          .setProductId(productId)
-          .build()
+        .setProductId(productId)
+        .build()
     );
 
     channel.shutdown();
 
     return Product.builder()
-        .id(productId)
-        .priceInCents(response.getValueInCents())
-        .build();
+      .id(productId)
+      .priceInCents(response.getValueInCents())
+      .build();
   }
 }

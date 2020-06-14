@@ -1,5 +1,7 @@
 package com.fredoliveira.discountcalculator.app.grpc;
 
+import com.fredoliveira.discountcalculator.app.grpc.user.FetchUserGrpc;
+import com.fredoliveira.discountcalculator.app.service.DiscountStrategy;
 import com.fredoliveira.discountcalculator.app.service.DiscountService;
 import io.grpc.ServerBuilder;
 import lombok.AccessLevel;
@@ -7,14 +9,16 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public final class GrpcServer {
-
   private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(GrpcServer.class.getName());
 
   public static void start() {
+    final FetchUserGrpc userGrpc = new FetchUserGrpc();
+    final DiscountStrategy strategy = new DiscountStrategy();
+
     try {
       io.grpc.Server server = ServerBuilder
           .forPort(50052)
-          .addService(new DiscountService())
+          .addService(new DiscountService(userGrpc, strategy))
           .build();
 
       server.start();

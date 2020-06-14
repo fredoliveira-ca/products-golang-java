@@ -2,7 +2,7 @@ package com.fredoliveira.discountcalculator.app.service;
 
 import java.math.BigDecimal;
 
-public interface DiscountFinder {
+public interface DiscountType {
 
   BigDecimal getDiscount();
 

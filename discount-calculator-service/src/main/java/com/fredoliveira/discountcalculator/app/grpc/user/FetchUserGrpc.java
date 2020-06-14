@@ -15,28 +15,28 @@ public class FetchUserGrpc {
 
   public User fetchBy(String userId) {
     ManagedChannel channel = ManagedChannelBuilder.forAddress(ADDRESS, PORT)
-        .usePlaintext()
-        .build();
+      .usePlaintext()
+      .build();
 
     UserServiceGrpc.UserServiceBlockingStub stub
       = UserServiceGrpc.newBlockingStub(channel);
 
     UserResponse response = stub.fetchOne(
       UserRequest.newBuilder()
-          .setUserId(userId)
-          .build()
+        .setUserId(userId)
+        .build()
     );
 
     channel.shutdown();
 
     final var dateOfBirth = response.getUser().getDateOfBirth();
     return User.builder()
-        .id(userId)
-        .dateOfBirth(
-          LocalDate.of(
-            dateOfBirth.getYear(),
-            dateOfBirth.getMonth(),
-            dateOfBirth.getDay()))
-        .build();
+      .id(userId)
+      .dateOfBirth(
+        LocalDate.of(
+          dateOfBirth.getYear(),
+          dateOfBirth.getMonth(),
+          dateOfBirth.getDay()))
+      .build();
   }
 }

@@ -1,18 +1,19 @@
-package com.fredoliveira.discountcalculator.data;
+package com.fredoliveira.discountcalculator.domain;
 
 import java.math.BigDecimal;
 
-import com.fredoliveira.discountcalculator.app.service.DiscountFinder;
+import com.fredoliveira.discountcalculator.app.service.DiscountType;
 import com.fredoliveira.discountcalculator.app.utility.DeLoreanMachine;
 
 import static com.fredoliveira.discountcalculator.domain.Promotion.BLACK_FRIDAY;
 import static java.math.BigDecimal.valueOf;
 
-public class BlackFridayDiscount implements DiscountFinder {
+public class BlackFridayDiscount implements DiscountType {
 
   public static final BigDecimal BLACK_FRIDAY_DISCOUNT = valueOf(0.10);
 
-  @Override public BigDecimal getDiscount() {
+  @Override
+  public BigDecimal getDiscount() {
     if (isBlackFriday()) {
       return BLACK_FRIDAY_DISCOUNT;
     }
