@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public final class GrpcServer {
   private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(GrpcServer.class.getName());
+  public static final int PORT = 50052;
 
   public static void start() {
     final FetchUserGrpc userGrpc = new FetchUserGrpc();
@@ -19,7 +20,7 @@ public final class GrpcServer {
 
     try {
       io.grpc.Server server = ServerBuilder
-        .forPort(50052)
+        .forPort(PORT)
         .addService(new DiscountService(userGrpc, productGrpc, strategy))
         .build();
 

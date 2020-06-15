@@ -16,15 +16,13 @@ import static com.fredoliveira.discountcalculator.domain.Discount.DEFAULT_DISCOU
 import static com.fredoliveira.discountcalculator.domain.Discount.LIMIT_DISCOUNT;
 import static java.util.Arrays.stream;
 
-@RequiredArgsConstructor
-public class DiscountService extends DiscountServiceGrpc.DiscountServiceImplBase {
+@RequiredArgsConstructor public class DiscountService extends DiscountServiceGrpc.DiscountServiceImplBase {
 
   private final FetchUserGrpc userGrpc;
   private final FetchProductGrpc productGrpc;
   private final DiscountStrategy strategy;
 
-  @Override
-  public void calculate(DiscountRequest request, StreamObserver<DiscountResponse> responseObserver) {
+  @Override public void calculate(DiscountRequest request, StreamObserver<DiscountResponse> responseObserver) {
     final var product = productGrpc.fetchBy(request.getProductId());
     final var discount = calculateDiscount(product.getPriceInCents(), request.getUserId());
     respond(responseObserver, discount);
@@ -41,7 +39,7 @@ public class DiscountService extends DiscountServiceGrpc.DiscountServiceImplBase
     }
 
     return Discount.builder().build()
-        .calculate(priceInCents, discount);
+      .calculate(priceInCents, discount);
   }
 
   private void respond(StreamObserver<DiscountResponse> responseObserver, Discount discount) {

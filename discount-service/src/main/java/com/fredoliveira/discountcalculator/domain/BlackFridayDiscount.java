@@ -12,8 +12,7 @@ public class BlackFridayDiscount implements DiscountType {
 
   public static final BigDecimal BLACK_FRIDAY_DISCOUNT = valueOf(0.10);
 
-  @Override
-  public BigDecimal getDiscount() {
+  @Override public BigDecimal getDiscount() {
     if (isBlackFriday()) {
       return BLACK_FRIDAY_DISCOUNT;
     }

@@ -35,8 +35,7 @@ import static org.mockito.Mockito.when;
 @DisplayName("Runs all tests for gRPC layer of discount calculator")
 public class GrpcServerTest {
 
-  @Rule
-  public final GrpcCleanupRule grpcTest = new GrpcCleanupRule();
+  @Rule public final GrpcCleanupRule grpcTest = new GrpcCleanupRule();
   public final FetchUserGrpc userGrpc = mock(FetchUserGrpc.class);
   public final FetchProductGrpc productGrpc = mock(FetchProductGrpc.class);
   public final DiscountStrategy strategy = new DiscountStrategy();
@@ -46,13 +45,12 @@ public class GrpcServerTest {
     blockingStub = registerGrpcMock(userGrpc, productGrpc, strategy);
   }
 
-  @BeforeEach
-  void setup() {
+  @BeforeEach void setup() {
     DeLoreanMachine.travelToPresent();
   }
 
-  @Test
-  void shouldGetPercentageDiscountLimitWhenIsBlackFridayAndUsersBrithday() {
+  @DisplayName("should get the percentage discount limit when is Black Friday and user's brithday")
+  @Test void shouldGetPercentageDiscountLimitWhenIsBlackFridayAndUsersBrithday() {
     final var product = ProductMock.getOne();
     when(productGrpc.fetchBy(any())).thenReturn(product);
     when(userGrpc.fetchBy(any())).thenReturn(UserMock.getOneWhoBirthdayIsOnBlackFriday());
@@ -67,8 +65,8 @@ public class GrpcServerTest {
       calculate.getValueInCents());
   }
 
-  @Test
-  void shouldGetTenPercentDiscountWhenIsBlackFriday() {
+  @DisplayName("should get ten percent of discount when is Black Friday")
+  @Test void shouldGetTenPercentDiscountWhenIsBlackFriday() {
     final var product = ProductMock.getOne();
     when(productGrpc.fetchBy(any())).thenReturn(product);
     when(userGrpc.fetchBy(any())).thenReturn(UserMock.getOne());
@@ -83,8 +81,8 @@ public class GrpcServerTest {
       calculate.getValueInCents());
   }
 
-  @Test
-  void shouldGetFivePercentDiscountWhenIsUsersBirthday() {
+  @DisplayName("should get five percent discount when is user's birthday")
+  @Test void shouldGetFivePercentDiscountWhenIsUsersBirthday() {
     final var product = ProductMock.getOne();
     when(productGrpc.fetchBy(any())).thenReturn(product);
     when(userGrpc.fetchBy(any())).thenReturn(UserMock.getOneWhoBirthdayIsToday());
@@ -98,8 +96,8 @@ public class GrpcServerTest {
       calculate.getValueInCents());
   }
 
-  @Test
-  void shouldGetZeroDiscountWhenCouldNotFetchUser() {
+  @DisplayName("should'n get discount when could'n fetch user")
+  @Test void shouldGetZeroDiscountWhenCouldNotFetchUser() {
     when(productGrpc.fetchBy(any())).thenReturn(ProductMock.getOne());
 
     final var calculate = blockingStub.calculate(DiscountRequest.newBuilder().build());
@@ -108,8 +106,8 @@ public class GrpcServerTest {
     assertEquals(0, calculate.getValueInCents());
   }
 
-  @Test
-  void shouldAbortCalculateWhenCouldNotFetchProduct() {
+  @DisplayName("should calculate be aborted when could'n fetch product")
+  @Test void shouldAbortCalculateWhenCouldNotFetchProduct() {
     assertThrows(
       StatusRuntimeException.class,
       () -> blockingStub.calculate(DiscountRequest.newBuilder().build()),

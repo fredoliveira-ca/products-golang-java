@@ -28,8 +28,7 @@ public class DiscountCalculatorTest {
   private final FetchProductGrpc productGrpc = mock(FetchProductGrpc.class);
   private DiscountService service;
 
-  @BeforeEach
-  void beforeEach() {
+  @BeforeEach void beforeEach() {
     DeLoreanMachine.travelToPresent();
     DiscountStrategy strategy = new DiscountStrategy();
     service = new DiscountService(userGrpc, productGrpc, strategy);

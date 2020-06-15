@@ -12,7 +12,7 @@ import static java.util.Objects.nonNull;
   public Long toCents(BigDecimal amount) {
     if (nonNull(amount)) {
       return amount.multiply(BigDecimal.valueOf(100))
-          .longValue();
+        .longValue();
     }
     return 0L;
   }
@@ -20,8 +20,8 @@ import static java.util.Objects.nonNull;
   public Long getDiscountValue(Long priceInCents, BigDecimal discount) {
     return toCents(
       valueOf(priceInCents)
-          .multiply(discount)
-          .divide(valueOf(100))
+        .multiply(discount)
+        .divide(valueOf(100))
     );
   }
 

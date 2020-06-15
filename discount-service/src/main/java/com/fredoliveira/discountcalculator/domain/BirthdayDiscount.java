@@ -10,8 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 import static java.math.BigDecimal.valueOf;
 
-@RequiredArgsConstructor
-public class BirthdayDiscount implements DiscountType {
+@RequiredArgsConstructor public class BirthdayDiscount implements DiscountType {
 
   private static final Logger log = Logger.getLogger(BirthdayDiscount.class.getName());
   private static final BigDecimal BIRTHDAY_DISCOUNT = valueOf(0.05);
@@ -19,8 +18,7 @@ public class BirthdayDiscount implements DiscountType {
   private final String userId;
   private final FetchUserGrpc fetchUserGrpc;
 
-  @Override
-  public BigDecimal getDiscount() {
+  @Override public BigDecimal getDiscount() {
     if (isUserBirthDay()) {
       return BIRTHDAY_DISCOUNT;
     }
