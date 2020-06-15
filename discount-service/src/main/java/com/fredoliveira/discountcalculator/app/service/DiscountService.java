@@ -32,24 +32,23 @@ public class DiscountService extends DiscountServiceGrpc.DiscountServiceImplBase
 
   public Discount calculateDiscount(Long priceInCents, String userId) {
     final var totalDiscount = stream(Promotion.values())
-        .map(promotion -> strategy.of(promotion, userId, userGrpc).getDiscount())
-        .reduce(BigDecimal.ZERO, BigDecimal::add);
+      .map(promotion -> strategy.of(promotion, userId, userGrpc).getDiscount())
+      .reduce(BigDecimal.ZERO, BigDecimal::add);
 
     var discount = DEFAULT_DISCOUNT;
     if (totalDiscount.compareTo(DEFAULT_DISCOUNT) > 0) {
       discount = LIMIT_DISCOUNT.min(totalDiscount);
     }
 
-    return Discount.builder()
-        .build()
+    return Discount.builder().build()
         .calculate(priceInCents, discount);
   }
 
   private void respond(StreamObserver<DiscountResponse> responseObserver, Discount discount) {
     DiscountResponse response = DiscountResponse.newBuilder()
-        .setPct(discount.getPercentage().floatValue())
-        .setValueInCents(discount.getValueInCents())
-        .build();
+      .setPct(discount.getPercentage().floatValue())
+      .setValueInCents(discount.getValueInCents())
+      .build();
 
     responseObserver.onNext(response);
     responseObserver.onCompleted();

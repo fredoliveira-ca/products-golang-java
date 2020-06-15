@@ -2,8 +2,8 @@ package com.fredoliveira.discountcalculator.app.grpc;
 
 import com.fredoliveira.discountcalculator.app.grpc.product.FetchProductGrpc;
 import com.fredoliveira.discountcalculator.app.grpc.user.FetchUserGrpc;
-import com.fredoliveira.discountcalculator.app.service.DiscountStrategy;
 import com.fredoliveira.discountcalculator.app.service.DiscountService;
+import com.fredoliveira.discountcalculator.app.service.DiscountStrategy;
 import io.grpc.ServerBuilder;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,9 +19,9 @@ public final class GrpcServer {
 
     try {
       io.grpc.Server server = ServerBuilder
-          .forPort(50052)
-          .addService(new DiscountService(userGrpc, productGrpc, strategy))
-          .build();
+        .forPort(50052)
+        .addService(new DiscountService(userGrpc, productGrpc, strategy))
+        .build();
 
       server.start();
       server.awaitTermination();
