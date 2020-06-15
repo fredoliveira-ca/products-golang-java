@@ -1,7 +1,8 @@
-package com.fredoliveira.discountcalculator.app.utility;
+package unit.com.fredoliveira.discountcalculator.app.utility;
 
 import java.time.LocalDate;
 
+import com.fredoliveira.discountcalculator.app.utility.DeLoreanMachine;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
