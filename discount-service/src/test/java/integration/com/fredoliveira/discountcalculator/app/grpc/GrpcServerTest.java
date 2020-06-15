@@ -6,7 +6,9 @@ import com.fredoliveira.discountcalculator.app.grpc.product.FetchProductGrpc;
 import com.fredoliveira.discountcalculator.app.grpc.user.FetchUserGrpc;
 import com.fredoliveira.discountcalculator.app.service.DiscountService;
 import com.fredoliveira.discountcalculator.app.service.DiscountStrategy;
+import com.fredoliveira.discountcalculator.app.utility.MoneyUtils;
 import integration.mock.ProductMock;
+import integration.mock.UserMock;
 import io.grpc.StatusRuntimeException;
 import io.grpc.inprocess.InProcessChannelBuilder;
 import io.grpc.inprocess.InProcessServerBuilder;
@@ -16,7 +18,10 @@ import io.grpc.testing.GrpcCleanupRule;
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 
+import static com.fredoliveira.discountcalculator.domain.Promotion.BIRTHDAY;
+import static net.bytebuddy.implementation.bytecode.constant.FloatConstant.ZERO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -28,13 +33,36 @@ public class GrpcServerTest {
   public final GrpcCleanupRule grpcCleanup = new GrpcCleanupRule();
 
   @Test
+  void shouldGetFivePercentDiscountWhenIsUsersBirthday() throws IOException {
+    FetchUserGrpc userGrpc = mock(FetchUserGrpc.class);
+    FetchProductGrpc productGrpc = mock(FetchProductGrpc.class);
+    DiscountStrategy strategy = new DiscountStrategy();
+
+    final var product = ProductMock.getOne();
+    when(productGrpc.fetchBy(any())).thenReturn(product);
+    when(userGrpc.fetchBy(any())).thenReturn(UserMock.getOneWhoIsBirthdayToday());
+
+    DiscountServiceGrpc.DiscountServiceBlockingStub blockingStub = registerGrpcMock(
+      userGrpc, productGrpc, strategy);
+
+    final var calculate = blockingStub.calculate(DiscountRequest.newBuilder().build());
+
+    assertNotEquals(ZERO, calculate.getPct());
+    assertEquals(BIRTHDAY.getDiscount().floatValue(), calculate.getPct());
+    assertEquals(
+      MoneyUtils.getDiscountValue(product.getPriceInCents(), BIRTHDAY.getDiscount()),
+      calculate.getValueInCents());
+  }
+
+  @Test
   void shouldGetZeroDiscountWhenCouldNotFetchUser() throws IOException {
     FetchUserGrpc userGrpc = new FetchUserGrpc();
     FetchProductGrpc productGrpc = mock(FetchProductGrpc.class);
     DiscountStrategy strategy = new DiscountStrategy();
     when(productGrpc.fetchBy(any())).thenReturn(ProductMock.getOne());
 
-    DiscountServiceGrpc.DiscountServiceBlockingStub blockingStub = registerGrpcMock(userGrpc, productGrpc, strategy);
+    DiscountServiceGrpc.DiscountServiceBlockingStub blockingStub = registerGrpcMock(
+      userGrpc, productGrpc, strategy);
 
     final var calculate = blockingStub.calculate(DiscountRequest.newBuilder().build());
 
@@ -48,7 +76,8 @@ public class GrpcServerTest {
     FetchProductGrpc productGrpc = new FetchProductGrpc();
     DiscountStrategy strategy = new DiscountStrategy();
 
-    DiscountServiceGrpc.DiscountServiceBlockingStub blockingStub = registerGrpcMock(userGrpc, productGrpc, strategy);
+    DiscountServiceGrpc.DiscountServiceBlockingStub blockingStub = registerGrpcMock(
+      userGrpc, productGrpc, strategy);
 
     assertThrows(
       StatusRuntimeException.class,

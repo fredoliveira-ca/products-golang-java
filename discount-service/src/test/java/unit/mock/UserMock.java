@@ -16,5 +16,4 @@ public class UserMock {
       .lastName("Rambo")
       .build();
   }
-
 }
