@@ -21,15 +21,8 @@ public class Discount {
   public Discount calculate(Long priceInCents, BigDecimal discount) {
     return Discount.builder()
       .percentage(discount)
-      .valueInCents(getDiscountValue(priceInCents, discount))
+      .valueInCents(MoneyUtils.getDiscountValue(priceInCents, discount))
       .build();
   }
 
-  private Long getDiscountValue(Long priceInCents, BigDecimal discount) {
-    return MoneyUtils.toCents(
-      valueOf(priceInCents)
-        .multiply(discount)
-        .divide(valueOf(100))
-    );
-  }
 }
