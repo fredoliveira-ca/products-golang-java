@@ -1,12 +1,15 @@
-package com.fredoliveira.discountcalculator.app.service;
+package unit.com.fredoliveira.discountcalculator.app.service;
 
+import com.fredoliveira.discountcalculator.app.grpc.product.FetchProductGrpc;
 import com.fredoliveira.discountcalculator.app.grpc.user.FetchUserGrpc;
+import com.fredoliveira.discountcalculator.app.service.DiscountService;
+import com.fredoliveira.discountcalculator.app.service.DiscountStrategy;
 import com.fredoliveira.discountcalculator.app.utility.DeLoreanMachine;
-import com.fredoliveira.discountcalculator.testetet.mock.ProductMock;
-import com.fredoliveira.discountcalculator.testetet.mock.UserMock;
+import integration.com.fredoliveira.discountcalculator.mock.ProductMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import unit.com.fredoliveira.discountcalculator.mock.UserMock;
 
 import static com.fredoliveira.discountcalculator.domain.Discount.LIMIT_DISCOUNT;
 import static com.fredoliveira.discountcalculator.domain.Promotion.BIRTHDAY;
@@ -22,19 +25,20 @@ import static org.mockito.Mockito.when;
 public class DiscountCalculatorTest {
 
   private final FetchUserGrpc userGrpc = mock(FetchUserGrpc.class);
+  private final FetchProductGrpc productGrpc = mock(FetchProductGrpc.class);
   private DiscountService service;
 
   @BeforeEach
   void beforeEach() {
     DeLoreanMachine.travelToPresent();
     DiscountStrategy strategy = new DiscountStrategy();
-    service = new DiscountService(userGrpc, strategy);
+    service = new DiscountService(userGrpc, productGrpc, strategy);
   }
 
   @Test
   @DisplayName("should calculate and retun no discount")
   void calculateWithoutDiscount() {
-    final var product = ProductMock.getProductMock();
+    final var product = ProductMock.getOne();
     final var user = UserMock.getUserMock();
     when(userGrpc.fetchBy(any())).thenReturn(user);
 
@@ -46,7 +50,7 @@ public class DiscountCalculatorTest {
   @Test
   @DisplayName("should calculate and retun a black friday discount")
   void calculateBlackFridayDiscount() {
-    final var product = ProductMock.getProductMock();
+    final var product = ProductMock.getOne();
     final var user = UserMock.getUserMock();
     when(userGrpc.fetchBy(any())).thenReturn(user);
 
@@ -61,7 +65,7 @@ public class DiscountCalculatorTest {
   @Test
   @DisplayName("should calculate and retun a birthday discount")
   void calculateBirthdayDiscount() {
-    final var product = ProductMock.getProductMock();
+    final var product = ProductMock.getOne();
     final var user = UserMock.getUserMock();
     when(userGrpc.fetchBy(any())).thenReturn(user);
     DeLoreanMachine.travelTo(user.getDateOfBirth());
@@ -74,7 +78,7 @@ public class DiscountCalculatorTest {
   @Test
   @DisplayName("should calculate sum birthday and friday discounts and retun the discount limit")
   void calculateAllDiscount() {
-    final var product = ProductMock.getProductMock();
+    final var product = ProductMock.getOne();
     final var user = UserMock.getUserMock();
     user.setDateOfBirth(BLACK_FRIDAY.getPromotionDate());
 

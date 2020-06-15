@@ -20,11 +20,12 @@ import static java.util.Arrays.stream;
 public class DiscountService extends DiscountServiceGrpc.DiscountServiceImplBase {
 
   private final FetchUserGrpc userGrpc;
+  private final FetchProductGrpc productGrpc;
   private final DiscountStrategy strategy;
 
   @Override
   public void calculate(DiscountRequest request, StreamObserver<DiscountResponse> responseObserver) {
-    final var product = new FetchProductGrpc().fetchBy(request.getProductId());
+    final var product = productGrpc.fetchBy(request.getProductId());
     final var discount = calculateDiscount(product.getPriceInCents(), request.getUserId());
     respond(responseObserver, discount);
   }

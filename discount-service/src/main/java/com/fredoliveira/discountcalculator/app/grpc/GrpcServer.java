@@ -1,5 +1,6 @@
 package com.fredoliveira.discountcalculator.app.grpc;
 
+import com.fredoliveira.discountcalculator.app.grpc.product.FetchProductGrpc;
 import com.fredoliveira.discountcalculator.app.grpc.user.FetchUserGrpc;
 import com.fredoliveira.discountcalculator.app.service.DiscountStrategy;
 import com.fredoliveira.discountcalculator.app.service.DiscountService;
@@ -14,11 +15,12 @@ public final class GrpcServer {
   public static void start() {
     final FetchUserGrpc userGrpc = new FetchUserGrpc();
     final DiscountStrategy strategy = new DiscountStrategy();
+    final FetchProductGrpc productGrpc = new FetchProductGrpc();
 
     try {
       io.grpc.Server server = ServerBuilder
           .forPort(50052)
-          .addService(new DiscountService(userGrpc, strategy))
+          .addService(new DiscountService(userGrpc, productGrpc, strategy))
           .build();
 
       server.start();
