@@ -19,9 +19,9 @@ repositories {
 }
 
 dependencies {
-  implementation 'io.grpc:grpc-netty-shaded:1.30.0'
-  implementation 'io.grpc:grpc-protobuf:1.30.0'
-  implementation 'io.grpc:grpc-stub:1.30.0'
+  compile 'io.grpc:grpc-netty-shaded:1.30.0'
+  compile 'io.grpc:grpc-protobuf:1.30.0'
+  compile 'io.grpc:grpc-stub:1.30.0'
 
   compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
   compileOnly 'org.projectlombok:lombok:1.18.12'
@@ -45,6 +45,18 @@ protobuf {
     all()*.plugins {
       grpc {}
     }
+  }
+}
+
+jar {
+  from {
+    configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+  }
+  manifest {
+    attributes(
+      'Main-Class': 'com.fredoliveira.discountcalculator.Application',
+      'Class-Path': configurations.compile.collect { it.getName() }.join(' ')
+    )
   }
 }
 
