@@ -9,13 +9,13 @@
 
 ### Services
 
-- [ ] product-service
+- [ x ] product-service
 - Service written in Go
 
-- [ ] discount-calculator-service
+- [ x ] discount-calculator-service
 - Service written in Java
 
-- [ ] user-service
+- [ x ] user-service
 - Service written in Go
 
 ## Running

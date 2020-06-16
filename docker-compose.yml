@@ -1,0 +1,48 @@
+version: "3.3"
+
+services:
+  pd-postgres:
+    image: postgres:alpine
+    restart: always
+    environment:
+      POSTGRES_DB: "productdb"
+      POSTGRES_PASSWORD: "admin"
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
+      - ./data.sql:/docker-entrypoint-initdb.d/2-data.sql
+    ports:
+      - '5432:5432'
+    network_mode: host
+
+  pd-product-service:
+    build: ./product-service
+    restart: always
+    depends_on:
+      - pd-postgres
+    environment:
+      DB_HOST: pd-postgres
+    ports:
+      - '8001:8001'
+      - '50051:50051'
+    network_mode: host
+
+  pd-user-service:
+    build: ./user-service
+    restart: always
+    depends_on:
+      - pd-postgres
+    environment:
+      DB_HOST: pd-postgres
+    ports:
+      - '50053:50053'
+    network_mode: host
+
+  pd-discount-service:
+    build: ./discount-service
+    restart: always
+    depends_on:
+      - pd-product-service
+      - pd-user-service
+    ports:
+      - '50052:50052'
+    network_mode: host

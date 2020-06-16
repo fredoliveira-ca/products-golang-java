@@ -1,19 +1,3 @@
-CREATE DATABASE productdb;
-
-CREATE TABLE product (
-    product_id text PRIMARY KEY,
-    price_in_cents integer,
-    title text,
-    description text
-);
-
-CREATE TABLE "user" (
-    user_id text PRIMARY KEY,
-    first_name text,
-    last_name text,
-    date_of_birth date NOT NULL
-);
-
 INSERT INTO product(
             product_id, price_in_cents, title, description)
     VALUES ('9325817d-f543-4718-9621-6d42d93d73f4', 2899, 'Adult Toronto Raptors Fanatics Branded Patriotic Face Covering 3-Pack', 'This product is not a medical device. Cover up while you represent your favorite team in this Toronto Raptors face covering.');
