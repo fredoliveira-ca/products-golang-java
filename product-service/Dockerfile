@@ -13,6 +13,7 @@ COPY ./app/grpc/proto/productpb/product.pb.go /product-service/proto
 COPY ./app/grpc/proto/discountpb/discount.pb.go /product-service/proto
 COPY ./app/app.go /product-service
 
+COPY .env .
 COPY go.mod .
 COPY go.sum .
 
