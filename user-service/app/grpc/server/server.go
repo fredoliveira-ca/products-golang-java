@@ -21,6 +21,8 @@ type server struct{}
 
 // Start is ...
 func Start() {
+	log.Println("Starting user server...")
+
 	listen, err := net.Listen("tcp", host+":"+port)
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)

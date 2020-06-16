@@ -12,6 +12,7 @@ WORKDIR /user-service
 COPY ./app/grpc/proto/userpb/user.pb.go /user-service/proto
 COPY ./app/app.go /user-service
 
+COPY .env .
 COPY go.mod .
 COPY go.sum .
 
