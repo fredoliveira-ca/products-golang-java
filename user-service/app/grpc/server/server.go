@@ -13,8 +13,8 @@ import (
 )
 
 const (
-	host     = "0.0.0.0"
-	port     = "50053"
+	host = "0.0.0.0"
+	port = "50053"
 )
 
 type server struct{}
@@ -29,7 +29,7 @@ func Start() {
 	}
 
 	newServer := grpc.NewServer()
-	
+
 	userpb.RegisterUserServiceServer(newServer, &server{})
 	if err := newServer.Serve(listen); err != nil {
 		log.Fatalf("Failed to serve: %v", err)

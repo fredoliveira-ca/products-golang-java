@@ -13,7 +13,7 @@ const (
 	defaultHost = "localhost"
 )
 
-//ConnectDataBase is a way to open a connection with the database.
+// ConnectDataBase is a way to open a connection with the database.
 // If the environment variable is not available, it must assume the default value.
 func ConnectDataBase() *sql.DB {
 	host := defaultHost

@@ -31,7 +31,7 @@ func ConnectDataBase() *sql.DB {
 	)
 
 	log.Println("Connecting database", connection)
-	db, err := sql.Open("postgres", connection)
+	db, err := sql.Open(os.Getenv("DB_DRIVER"), connection)
 	if err != nil {
 		panic(err.Error())
 	}

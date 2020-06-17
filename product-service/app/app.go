@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/joho/godotenv"
-	_ "github.com/lib/pq"
 
 	"github.com/fredoliveira-ca/products-golang-java/product-service/app/grpc/server"
 	"github.com/fredoliveira-ca/products-golang-java/product-service/app/web/route"
