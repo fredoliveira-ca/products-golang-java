@@ -19,8 +19,6 @@ services:
     restart: always
     depends_on:
       - pd-postgres
-    environment:
-      DB_HOST: pd-postgres
     ports:
       - '8001:8001'
       - '50051:50051'
@@ -31,8 +29,6 @@ services:
     restart: always
     depends_on:
       - pd-postgres
-    environment:
-      DB_HOST: pd-postgres
     ports:
       - '50053:50053'
     network_mode: host
