@@ -1,24 +1,10 @@
-FROM golang:alpine as build-env
+FROM golang:alpine as builder
+RUN mkdir /build 
+ADD . /build/
+WORKDIR /build 
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main .
 
-ENV GO111MODULE=on
-
-RUN apk update && apk add bash git gcc g++ libc-dev
-
-RUN mkdir /product-service
-RUN mkdir -p /product-service/proto 
-
-WORKDIR /product-service
-
-COPY ./app/grpc/proto/productpb/product.pb.go /product-service/proto
-COPY ./app/grpc/proto/discountpb/discount.pb.go /product-service/proto
-COPY ./app/app.go /product-service
-
-COPY .env .
-COPY go.mod .
-COPY go.sum .
-
-RUN go mod download
-
-RUN go build -o product-service .
-
-CMD ./product-service
+FROM scratch
+COPY --from=builder /build/main /app/
+WORKDIR /app
+CMD ["./main"]
