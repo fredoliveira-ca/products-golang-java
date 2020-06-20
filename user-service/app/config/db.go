@@ -5,33 +5,38 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	_ "github.com/lib/pq"
 )
 
 const (
 	defaultHost = "localhost"
+	defaultPort = 5432
+	user        = "postgres"
+	password    = "admin"
+	dbname      = "productdb"
+	driver      = "postgres"
 )
 
-// ConnectDataBase is a way to open a connection with the database.
+// ConnectDataBase is a method to provide a connection with the database.
 // If the environment variable is not available, it must assume the default value.
 func ConnectDataBase() *sql.DB {
 	host := defaultHost
 	if os.Getenv("DB_HOST") != "" {
 		host = os.Getenv("DB_HOST")
 	}
+	port := defaultPort
+	if os.Getenv("DB_PORT") != "" {
+		port, _ = strconv.Atoi(os.Getenv("DB_PORT"))
+	}
 
-	connection := fmt.Sprintf(
-		"host=%s port=%s user=%s  password=%s dbname=%s sslmode=disable",
-		host,
-		os.Getenv("DB_PORT"),
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_NAME"),
+	conn := fmt.Sprintf(
+		"host=%s port=%d user=%s  password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbname,
 	)
 
-	log.Println("Connecting database", connection)
-	db, err := sql.Open(os.Getenv("DB_DRIVER"), connection)
+	db, err := sql.Open(driver, conn)
 	if err != nil {
 		panic(err.Error())
 	}
