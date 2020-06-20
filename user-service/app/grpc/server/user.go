@@ -13,30 +13,32 @@ import (
 )
 
 const (
-	host = "0.0.0.0"
-	port = "50053"
+	userAddress = "0.0.0.0:50053"
 )
 
-type server struct{}
+type server struct {
+}
 
-// Start is ...
-func Start() {
-	log.Println("Starting user server...")
-
-	listen, err := net.Listen("tcp", host+":"+port)
+// RegisterServer sets up the connection server.
+func RegisterServer() {
+	lis, err := net.Listen("tcp", userAddress)
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
 
-	newServer := grpc.NewServer()
+	s := grpc.NewServer()
 
-	userpb.RegisterUserServiceServer(newServer, &server{})
-	if err := newServer.Serve(listen); err != nil {
+	userpb.RegisterUserServiceServer(s, &server{})
+
+	if err := s.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
 	}
 }
 
+// FetchOne goes to the repository and return a user based on the informed identifier.
 func (*server) FetchOne(ctx context.Context, req *userpb.UserRequest) (*userpb.UserResponse, error) {
+	log.Println("Starting user server...")
+
 	user := repository.FindOne(req.GetUserId())
 
 	return &userpb.UserResponse{

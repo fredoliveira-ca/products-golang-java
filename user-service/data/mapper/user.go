@@ -5,7 +5,7 @@ import (
 	"github.com/fredoliveira-ca/products-golang-java/user-service/domain"
 )
 
-// ToProto is ...
+// ToProto is a converter which parse domain class to proto.
 func ToProto(user domain.User) *userpb.UserProto {
 	return &userpb.UserProto{
 		FirstName: user.FirstName,

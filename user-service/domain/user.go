@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-//User is...
+//User domain struct.
 type User struct {
 	ID          string
 	FirstName   string

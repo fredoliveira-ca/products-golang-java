@@ -1,18 +1,25 @@
 package repository
 
 import (
+	"log"
 	"time"
 
 	db "github.com/fredoliveira-ca/products-golang-java/user-service/app/config"
 	"github.com/fredoliveira-ca/products-golang-java/user-service/domain"
 )
 
-//FindOne is...
+const (
+	selectOneUserByID = "SELECT * FROM \"user\" WHERE user_id=$1"
+)
+
+// FindOne has the responsibility to connect with the database
+// 	and return a user based on the informed identifier.
 func FindOne(id string) domain.User {
 	db := db.ConnectDataBase()
-	sql := "SELECT * FROM \"user\" WHERE user_id=$1;"
-	selection, err := db.Query(sql, id)
+
+	selection, err := db.Query(selectOneUserByID, id)
 	if err != nil {
+		log.Println(err)
 		panic(err.Error())
 	}
 
