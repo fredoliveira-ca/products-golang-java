@@ -1,4 +1,4 @@
-package utils
+package helper
 
 import (
 	"context"
@@ -7,6 +7,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/docker/go-connections/nat"
 	_ "github.com/lib/pq"
 	"github.com/pkg/errors"
 	testcontainers "github.com/testcontainers/testcontainers-go"
@@ -40,16 +41,16 @@ type PostgreSQLContainer struct {
 
 // GetDriver returns a sql.DB connecting to the previously started Postgres DB.
 // All the parameters are taken from the previous PostgreSQLContainerRequest.
-func (c *PostgreSQLContainer) GetDriver(ctx context.Context) (*sql.DB, error) {
+func (c *PostgreSQLContainer) GetDriver(ctx context.Context) (*sql.DB, *nat.Port, string, error) {
 
 	host, err := c.Container.Host(ctx)
 	if err != nil {
-		return nil, err
+		return nil, nil, "", err
 	}
 
 	mappedPort, err := c.Container.MappedPort(ctx, postgresPort)
 	if err != nil {
-		return nil, err
+		return nil, nil, "", err
 	}
 
 	db, err := sql.Open("postgres", fmt.Sprintf(
@@ -61,7 +62,7 @@ func (c *PostgreSQLContainer) GetDriver(ctx context.Context) (*sql.DB, error) {
 		c.req.Database,
 	))
 	if err != nil {
-		return nil, err
+		return nil, nil, "", err
 	}
 
 	log.Println(fmt.Sprintf(
@@ -74,7 +75,7 @@ func (c *PostgreSQLContainer) GetDriver(ctx context.Context) (*sql.DB, error) {
 	))
 	log.Println(db)
 
-	return db, nil
+	return db, &mappedPort, host, nil
 }
 
 // NewPostgreSQLContainer creates and starts a Postgres database.
