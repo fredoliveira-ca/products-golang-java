@@ -16,25 +16,28 @@ const (
 	port = "50051"
 )
 
-type server struct{}
+// Server represents the gRPC server
+type Server struct{}
 
-// Start is ...
+// Start a gRPC server and waits for connection
 func Start() {
-	log.Println("Starting product server...")
-
 	listen, err := net.Listen("tcp", host+":"+port)
+
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
 
 	newServer := grpc.NewServer()
-	productpb.RegisterProductPriceServiceServer(newServer, &server{})
+
+	productpb.RegisterProductPriceServiceServer(newServer, &Server{})
+
 	if err := newServer.Serve(listen); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
 	}
 }
 
-func (*server) FetchOne(ctx context.Context, req *productpb.ProductPriceRequest) (*productpb.ProductPriceResponse, error) {
+// FetchOne returns a product details and error
+func (*Server) FetchOne(ctx context.Context, req *productpb.ProductPriceRequest) (*productpb.ProductPriceResponse, error) {
 	productID := req.ProductId
 
 	product := repository.FindOne(productID)

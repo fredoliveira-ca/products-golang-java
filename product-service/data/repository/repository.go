@@ -6,12 +6,17 @@ import (
 	domain "github.com/fredoliveira-ca/products-golang-java/product-service/domain"
 )
 
+const (
+	selectAllProducts    = "SELECT * FROM product"
+	selectOneProductByID = "SELECT * FROM product WHERE product_id=$1"
+)
+
 // FindAll is ...
 func FindAll(userID string) []domain.Product {
 	db := db.ConnectDataBase()
 	defer db.Close()
 
-	records, err := db.Query("SELECT * FROM product")
+	records, err := db.Query(selectAllProducts)
 	if err != nil {
 		panic(err)
 	}
@@ -51,8 +56,7 @@ func FindAll(userID string) []domain.Product {
 // FindOne is ...
 func FindOne(id string) domain.Product {
 	db := db.ConnectDataBase()
-	sql := "SELECT * FROM product WHERE product_id=$1;"
-	records, err := db.Query(sql, id)
+	records, err := db.Query(selectOneProductByID, id)
 
 	if err != nil {
 		panic(err.Error())

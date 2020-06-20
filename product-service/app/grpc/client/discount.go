@@ -6,29 +6,28 @@ import (
 
 	"google.golang.org/grpc"
 
-	discountpb "github.com/fredoliveira-ca/products-golang-java/product-service/app/grpc/proto/discountpb"
+	api "github.com/fredoliveira-ca/products-golang-java/product-service/app/grpc/proto/discountpb"
 )
 
 const (
-	host = "0.0.0.0"
-	port = "50052"
+	discountAddress = "0.0.0.0:50052"
 )
 
 // CalculateDiscount is ...
-func CalculateDiscount(productID, userID string) *discountpb.DiscountResponse {
-	connection, err := grpc.Dial(host+":"+port, grpc.WithInsecure())
+func CalculateDiscount(productID, userID string) *api.DiscountResponse {
+	conn, err := grpc.Dial(discountAddress, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("Could not connect: %v", err)
 	}
-	defer connection.Close()
+	defer conn.Close()
 
-	cc := discountpb.NewDiscountServiceClient(connection)
+	discountClient := api.NewDiscountServiceClient(conn)
 
-	return doUnary(cc, productID, userID)
+	return doUnary(discountClient, productID, userID)
 }
 
-func doUnary(c discountpb.DiscountServiceClient, productID, userID string) *discountpb.DiscountResponse {
-	req := &discountpb.DiscountRequest{
+func doUnary(c api.DiscountServiceClient, productID, userID string) *api.DiscountResponse {
+	req := &api.DiscountRequest{
 		ProductId: productID,
 		UserId:    userID,
 	}
