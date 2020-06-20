@@ -11,6 +11,10 @@ import (
 
 const (
 	defaultHost = "localhost"
+	user        = "postgres"
+	password    = "admin"
+	dbname      = "productdb"
+	driver      = "postgres"
 )
 
 // ConnectDataBase is a way to open a connection with the database.
@@ -22,16 +26,12 @@ func ConnectDataBase() *sql.DB {
 	}
 
 	connection := fmt.Sprintf(
-		"host=%s port=%s user=%s  password=%s dbname=%s sslmode=disable",
-		host,
-		os.Getenv("DB_PORT"),
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_NAME"),
+		"host=%s port=%d user=%s  password=%s dbname=%s sslmode=disable",
+		host, 5432, user, password, dbname,
 	)
 
 	log.Println("Connecting database", connection)
-	db, err := sql.Open(os.Getenv("DB_DRIVER"), connection)
+	db, err := sql.Open(driver, connection)
 	if err != nil {
 		panic(err.Error())
 	}
