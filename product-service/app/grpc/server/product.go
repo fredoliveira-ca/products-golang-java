@@ -12,16 +12,16 @@ import (
 )
 
 const (
-	host = "0.0.0.0"
-	port = "50051"
+	productAddress = "0.0.0.0:50051"
 )
 
 // Server represents the gRPC server
-type Server struct{}
+type Server struct {
+}
 
-// Start a gRPC server and waits for connection
-func Start() {
-	listen, err := net.Listen("tcp", host+":"+port)
+// RegisterServer sets up the gRPC server and waits for a connection.
+func RegisterServer() {
+	listen, err := net.Listen("tcp", productAddress)
 
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
@@ -36,7 +36,7 @@ func Start() {
 	}
 }
 
-// FetchOne returns a product details and error
+// FetchOne returns product details and error
 func (*Server) FetchOne(ctx context.Context, req *productpb.ProductPriceRequest) (*productpb.ProductPriceResponse, error) {
 	productID := req.ProductId
 
