@@ -81,5 +81,5 @@ func TestFetchOne(t *testing.T) {
 		log.Fatalf("Error: %v", err)
 	}
 
-	assert.Equal(t, r.User.FirstName, "John", "The first name should be John!")
+	assert.Equal(t, r.User.FirstName, "John", "The first name should be John! We got: "+r.User.FirstName)
 }
