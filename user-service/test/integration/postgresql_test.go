@@ -9,13 +9,13 @@ import (
 	testcontainers "github.com/testcontainers/testcontainers-go"
 	"gotest.tools/assert"
 
-	utils "github.com/fredoliveira-ca/products-golang-java/user-service/test/utils"
+	"github.com/fredoliveira-ca/products-golang-java/user-service/test/helper"
 )
 
 func TestWriteIntoDB(t *testing.T) {
 	ctx := context.Background()
 
-	c, err := utils.NewPostgreSQLContainer(ctx, utils.PostgreSQLContainerRequest{
+	c, err := helper.NewPostgreSQLContainer(ctx, helper.PostgreSQLContainerRequest{
 		GenericContainerRequest: testcontainers.GenericContainerRequest{
 			Started: true,
 		},
@@ -25,7 +25,7 @@ func TestWriteIntoDB(t *testing.T) {
 	}
 	defer c.Container.Terminate(ctx)
 
-	conn, err := c.GetDriver(ctx)
+	conn, _, _, err := c.GetDriver(ctx)
 	if err != nil {
 		t.Fatal(err.Error())
 	}
@@ -41,7 +41,7 @@ func TestWriteIntoDB(t *testing.T) {
 func TestInteractWithDB(t *testing.T) {
 	ctx := context.Background()
 
-	c, err := utils.NewPostgreSQLContainer(ctx, utils.PostgreSQLContainerRequest{
+	c, err := helper.NewPostgreSQLContainer(ctx, helper.PostgreSQLContainerRequest{
 		GenericContainerRequest: testcontainers.GenericContainerRequest{
 			Started: true,
 		},
@@ -51,7 +51,7 @@ func TestInteractWithDB(t *testing.T) {
 	}
 	defer c.Container.Terminate(ctx)
 
-	conn, err := c.GetDriver(ctx)
+	conn, _, _, err := c.GetDriver(ctx)
 	if err != nil {
 		t.Fatal(err.Error())
 	}

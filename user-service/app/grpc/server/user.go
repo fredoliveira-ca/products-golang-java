@@ -16,10 +16,11 @@ const (
 	userAddress = "0.0.0.0:50053"
 )
 
-type server struct {
+// Server represents the gRPC server
+type Server struct {
 }
 
-// RegisterServer sets up the connection server.
+// RegisterServer sets up the gRPC server and waits for a connection.
 func RegisterServer() {
 	lis, err := net.Listen("tcp", userAddress)
 	if err != nil {
@@ -28,17 +29,15 @@ func RegisterServer() {
 
 	s := grpc.NewServer()
 
-	userpb.RegisterUserServiceServer(s, &server{})
+	userpb.RegisterUserServiceServer(s, &Server{})
 
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
 	}
 }
 
-// FetchOne goes to the repository and return a user based on the informed identifier.
-func (*server) FetchOne(ctx context.Context, req *userpb.UserRequest) (*userpb.UserResponse, error) {
-	log.Println("Starting user server...")
-
+// FetchOne goes to the repository and returns a user based on the informed identifier.
+func (*Server) FetchOne(ctx context.Context, req *userpb.UserRequest) (*userpb.UserResponse, error) {
 	user := repository.FindOne(req.GetUserId())
 
 	return &userpb.UserResponse{
