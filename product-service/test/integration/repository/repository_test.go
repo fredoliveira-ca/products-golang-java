@@ -16,6 +16,11 @@ import (
 	"github.com/fredoliveira-ca/products-golang-java/product-service/test/helper"
 )
 
+const (
+	createTable = "CREATE TABLE product (product_id text PRIMARY KEY, price_in_cents integer, title text, description text)"
+	insertTable = "INSERT INTO product(product_id, price_in_cents, title, description) VALUES ($1, $2, $3, $4)"
+)
+
 func TestMain(m *testing.M) {
 	ctx := context.Background()
 
@@ -36,19 +41,19 @@ func TestMain(m *testing.M) {
 	os.Setenv("DB_PORT", strings.Split(string(*port), "/")[0])
 	os.Setenv("DB_HOST", host)
 
-	time.Sleep(time.Second * 3)
+	time.Sleep(time.Second * 10)
 
-	_, err = conn.ExecContext(ctx, "CREATE TABLE product (product_id text PRIMARY KEY, price_in_cents integer, title text, description text)")
+	_, err = conn.ExecContext(ctx, createTable)
 	if err != nil {
 		log.Fatalf("did not execute: %v", err)
 	}
 
-	insertion, err := conn.Prepare("INSERT INTO product(product_id, price_in_cents, title, description) VALUES ('12345', 5000, 'Title test', 'Description test');")
-	insertion2, err := conn.Prepare("INSERT INTO product(product_id, price_in_cents, title, description) VALUES ('1', 0, '0', '-1');")
-	insertion3, err := conn.Prepare("INSERT INTO product(product_id, price_in_cents, title, description) VALUES ('9325817d-f543-4718-9621-6d42d93d73f4', 1002003004, 'product', 'cool');")
-	insertion.Exec()
-	insertion2.Exec()
-	insertion3.Exec()
+	insertion, err := conn.Prepare(insertTable)
+	insertion.Exec("12345", 5000, "Title test", "Description test")
+	insertion2, err := conn.Prepare(insertTable)
+	insertion2.Exec("1", 0, "0", "-1")
+	insertion3, err := conn.Prepare(insertTable)
+	insertion3.Exec("9325817d-f543-4718-9621-6d42d93d73f4", 1002003004, "product", "cool")
 
 	os.Exit(m.Run())
 }
