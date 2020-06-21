@@ -42,7 +42,7 @@ curl --request GET \
   --url 'http://localhost:8001/product?user=41597637-8c33-409f-a869-a2090e87ec78'
 ```
 
-3. For testing the birthday discount use the following user:
+3. For testing the birthday discount you may use the following user:
 `
 4a07fb31-d908-411b-949e-6ae3effbe60b
 `
