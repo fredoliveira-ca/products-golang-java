@@ -3,6 +3,7 @@ package e2e
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -22,16 +23,16 @@ import (
 )
 
 const (
-	discountAddress = "0.0.0.0:50052"
-	createTable     = "CREATE TABLE product (product_id text PRIMARY KEY, price_in_cents integer, title text, description text)"
-	insertTable     = "INSERT INTO product(product_id, price_in_cents, title, description) VALUES ($1, $2, $3, $4)"
+	discountAddress  = "0.0.0.0:50052"
+	createTable      = "CREATE TABLE product (product_id text PRIMARY KEY, price_in_cents integer, title text, description text)"
+	insertTable      = "INSERT INTO product(product_id, price_in_cents, title, description) VALUES ($1, $2, $3, $4)"
+	birthdayDiscount = float32(0.05)
 )
 
 var (
 	productClient api.DiscountServiceClient
 )
 
-// Fazer para produtos
 func TestMain(m *testing.M) {
 	ctx := context.Background()
 
@@ -69,7 +70,7 @@ func TestMain(m *testing.M) {
 	route.LoadRoutes()
 
 	go http.ListenAndServe(":8001", nil)
-
+	go helper.NewMockServer(50052)
 	// Run tests
 	os.Exit(m.Run())
 }
@@ -115,5 +116,42 @@ func TestListAllProductWithoutDiscount(t *testing.T) {
 }
 
 func TestListAllProductWithBirthdayDiscount(t *testing.T) {
+	req, err := http.Get("http://localhost:8001/product?user=u23r-b1r7hday")
+	if err != nil {
+		log.Fatalf("did not execute: %v", err)
+	}
+	defer req.Body.Close()
 
+	body, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		log.Fatalf("did not execute: %v", err)
+	}
+
+	var products []domain.Product
+	json.Unmarshal([]byte(body), &products)
+
+	for _, product := range products {
+		assert.Equal(t, birthdayDiscount, product.Discount.Pct, "Assertion failure! We've got: "+fmt.Sprintf("%f", product.Discount.Pct)+" instead of "+fmt.Sprintf("%f", birthdayDiscount)+" for the product: "+product.ID)
+	}
+}
+
+func TestListAllProductWithNoDiscount(t *testing.T) {
+	req, err := http.Get("http://localhost:8001/product?user=0rd1n4ry-u23r")
+	if err != nil {
+		log.Fatalf("did not execute: %v", err)
+	}
+	defer req.Body.Close()
+
+	body, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		log.Fatalf("did not execute: %v", err)
+	}
+
+	var products []domain.Product
+	json.Unmarshal([]byte(body), &products)
+
+	expectedNoDiscount := float32(0)
+	for _, product := range products {
+		assert.Equal(t, expectedNoDiscount, product.Discount.Pct, "Assertion failure! We've got: "+fmt.Sprintf("%f", product.Discount.Pct)+" instead of "+fmt.Sprintf("%f", expectedNoDiscount)+" for the product: "+product.ID)
+	}
 }
