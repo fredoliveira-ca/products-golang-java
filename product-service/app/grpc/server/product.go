@@ -22,15 +22,13 @@ type Server struct {
 // RegisterServer sets up the gRPC server and waits for a connection.
 func RegisterServer() {
 	listen, err := net.Listen("tcp", productAddress)
-
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
-
+	
 	newServer := grpc.NewServer()
-
+	
 	productpb.RegisterProductPriceServiceServer(newServer, &Server{})
-
 	if err := newServer.Serve(listen); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
 	}
@@ -38,9 +36,7 @@ func RegisterServer() {
 
 // FetchOne returns product details and error
 func (*Server) FetchOne(ctx context.Context, req *productpb.ProductPriceRequest) (*productpb.ProductPriceResponse, error) {
-	productID := req.ProductId
-
-	product := repository.FindOne(productID)
+	product := repository.FindOne(req.ProductId)
 
 	return &productpb.ProductPriceResponse{
 		ValueInCents: product.PriceInCents,
