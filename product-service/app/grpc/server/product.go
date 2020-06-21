@@ -15,7 +15,7 @@ const (
 	productAddress = "0.0.0.0:50051"
 )
 
-// Server represents the gRPC server
+// Server represents the gRPC server.
 type Server struct {
 }
 
@@ -34,7 +34,7 @@ func RegisterServer() {
 	}
 }
 
-// FetchOne returns product details and error
+// FetchOne returns product details and error.
 func (*Server) FetchOne(ctx context.Context, req *productpb.ProductPriceRequest) (*productpb.ProductPriceResponse, error) {
 	product := repository.FindOne(req.ProductId)
 

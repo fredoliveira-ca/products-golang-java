@@ -12,8 +12,7 @@ const (
 	selectOneUserByID = "SELECT * FROM \"user\" WHERE user_id=$1"
 )
 
-// FindOne has the responsibility to connect with the database
-// 	and return a user based on the informed identifier.
+// FindOne returns a user based on the identifier.
 func FindOne(id string) domain.User {
 	db := db.ConnectDataBase()
 

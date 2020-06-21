@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"log"
+
 	db "github.com/fredoliveira-ca/products-golang-java/product-service/app/config"
 	grpc "github.com/fredoliveira-ca/products-golang-java/product-service/app/grpc/client"
 	domain "github.com/fredoliveira-ca/products-golang-java/product-service/domain"
@@ -11,7 +13,7 @@ const (
 	selectOneProductByID = "SELECT * FROM product WHERE product_id=$1"
 )
 
-// FindAll is ...
+// FindAll returns all products and discount if it's available.
 func FindAll(userID string) []domain.Product {
 	db := db.ConnectDataBase()
 	defer db.Close()
@@ -40,24 +42,26 @@ func FindAll(userID string) []domain.Product {
 
 		discount := grpc.CalculateDiscount(product.ID, userID)
 		product.Discount = domain.Discount{Pct: 0, ValueInCents: 0}
+		
 		if discount != nil {
 			product.Discount = domain.Discount{
 				Pct:          discount.Pct,
 				ValueInCents: discount.ValueInCents,
 			}
 		}
-
+		
 		products = append(products, product)
 	}
 
 	return products
 }
 
-// FindOne is ...
+// FindOne returns a product based on the identifier.
 func FindOne(id string) domain.Product {
 	db := db.ConnectDataBase()
-	records, err := db.Query(selectOneProductByID, id)
+	defer db.Close()
 
+	records, err := db.Query(selectOneProductByID, id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -77,7 +81,6 @@ func FindOne(id string) domain.Product {
 		product.Description = description
 		product.PriceInCents = price
 	}
-
-	defer db.Close()
+	
 	return product
 }

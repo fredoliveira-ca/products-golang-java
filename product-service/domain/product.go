@@ -1,6 +1,6 @@
 package dto
 
-//Product domain struct
+//Product domain struct.
 type Product struct {
 	ID           string
 	PriceInCents int64

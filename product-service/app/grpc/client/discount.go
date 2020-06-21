@@ -13,7 +13,7 @@ const (
 	discountAddress = "0.0.0.0:50052"
 )
 
-// CalculateDiscount is ...
+// CalculateDiscount calls the discount service and brings back the discount related to promotion.
 func CalculateDiscount(productID, userID string) *api.DiscountResponse {
 	conn, err := grpc.Dial(discountAddress, grpc.WithInsecure())
 	if err != nil {
