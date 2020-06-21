@@ -6,6 +6,7 @@ import com.fredoliveira.discountcalculator.app.utility.MoneyUtils;
 import lombok.Builder;
 import lombok.Getter;
 
+import static java.math.BigDecimal.ZERO;
 import static java.math.BigDecimal.valueOf;
 
 @Getter
@@ -19,6 +20,13 @@ public class Discount {
   private final Long valueInCents;
 
   public Discount calculate(Long priceInCents, BigDecimal discount) {
+    if(priceInCents <= 0L) {
+      return Discount.builder()
+        .percentage(ZERO)
+        .valueInCents(0L)
+        .build();
+    }
+
     return Discount.builder()
       .percentage(discount)
       .valueInCents(MoneyUtils.getDiscountValue(priceInCents, discount))

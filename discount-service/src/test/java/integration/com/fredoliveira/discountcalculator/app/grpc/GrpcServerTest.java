@@ -49,8 +49,9 @@ public class GrpcServerTest {
     DeLoreanMachine.travelToPresent();
   }
 
+  @Test
   @DisplayName("should get the percentage discount limit when is Black Friday and user's brithday")
-  @Test void shouldGetPercentageDiscountLimitWhenIsBlackFridayAndUsersBrithday() {
+  void shouldGetPercentageDiscountLimitWhenIsBlackFridayAndUsersBrithday() {
     final var product = ProductMock.getOne();
     when(productGrpc.fetchBy(any())).thenReturn(product);
     when(userGrpc.fetchBy(any())).thenReturn(UserMock.getOneWhoBirthdayIsOnBlackFriday());
@@ -65,8 +66,9 @@ public class GrpcServerTest {
       calculate.getValueInCents());
   }
 
+  @Test
   @DisplayName("should get ten percent of discount when is Black Friday")
-  @Test void shouldGetTenPercentDiscountWhenIsBlackFriday() {
+  void shouldGetTenPercentDiscountWhenIsBlackFriday() {
     final var product = ProductMock.getOne();
     when(productGrpc.fetchBy(any())).thenReturn(product);
     when(userGrpc.fetchBy(any())).thenReturn(UserMock.getOne());
@@ -81,8 +83,9 @@ public class GrpcServerTest {
       calculate.getValueInCents());
   }
 
+  @Test
   @DisplayName("should get five percent discount when is user's birthday")
-  @Test void shouldGetFivePercentDiscountWhenIsUsersBirthday() {
+  void shouldGetFivePercentDiscountWhenIsUsersBirthday() {
     final var product = ProductMock.getOne();
     when(productGrpc.fetchBy(any())).thenReturn(product);
     when(userGrpc.fetchBy(any())).thenReturn(UserMock.getOneWhoBirthdayIsToday());
@@ -96,8 +99,9 @@ public class GrpcServerTest {
       calculate.getValueInCents());
   }
 
+  @Test
   @DisplayName("should'n get discount when could'n fetch user")
-  @Test void shouldGetZeroDiscountWhenCouldNotFetchUser() {
+  void shouldGetZeroDiscountWhenCouldNotFetchUser() {
     when(productGrpc.fetchBy(any())).thenReturn(ProductMock.getOne());
 
     final var calculate = blockingStub.calculate(DiscountRequest.newBuilder().build());
@@ -106,8 +110,9 @@ public class GrpcServerTest {
     assertEquals(0, calculate.getValueInCents());
   }
 
+  @Test
   @DisplayName("should calculate be aborted when could'n fetch product")
-  @Test void shouldAbortCalculateWhenCouldNotFetchProduct() {
+  void shouldAbortCalculateWhenCouldNotFetchProduct() {
     assertThrows(
       StatusRuntimeException.class,
       () -> blockingStub.calculate(DiscountRequest.newBuilder().build()),

@@ -47,6 +47,31 @@ public class DiscountCalculatorTest {
   }
 
   @Test
+  @DisplayName("should calculate a free product and retun no discount")
+  void calculateProductZeroPriceAndZeroDiscount() {
+    final var product = ProductMock.getOneFree();
+    final var user = UserMock.getOne();
+    when(userGrpc.fetchBy(any())).thenReturn(user);
+
+    final var discount = service.calculateDiscount(product.getPriceInCents(), user.getId());
+
+    assertEquals(ZERO, discount.getPercentage());
+  }
+
+  @Test
+  @DisplayName("should calculate and retun a birthday discount")
+  void calculateProductZeroPriceAndBirthdayDiscount() {
+    final var product = ProductMock.getOneFree();
+    final var user = UserMock.getOne();
+    when(userGrpc.fetchBy(any())).thenReturn(user);
+    DeLoreanMachine.travelTo(user.getDateOfBirth());
+
+    final var discount = service.calculateDiscount(product.getPriceInCents(), user.getId());
+
+    assertEquals(ZERO, discount.getPercentage());
+  }
+
+  @Test
   @DisplayName("should calculate and retun a black friday discount")
   void calculateBlackFridayDiscount() {
     final var product = ProductMock.getOne();
