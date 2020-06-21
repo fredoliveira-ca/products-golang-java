@@ -36,7 +36,7 @@ func TestMain(m *testing.M) {
 		},
 	})
 	if err != nil {
-		log.Fatalf("did not get a postgres container: %v", err)
+		log.Fatalf("did not get postgres container: %v", err)
 	}
 	defer c.Container.Terminate(ctx)
 

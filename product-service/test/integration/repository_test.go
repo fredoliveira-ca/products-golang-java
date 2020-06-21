@@ -16,7 +16,7 @@ import (
 	"github.com/fredoliveira-ca/products-golang-java/product-service/test/helper"
 )
 
-func TestFindOne(t *testing.T) {
+func TestMain(m *testing.M) {
 	ctx := context.Background()
 
 	c, err := helper.NewPostgreSQLContainer(ctx, helper.PostgreSQLContainerRequest{
@@ -25,7 +25,7 @@ func TestFindOne(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Fatal(err.Error())
+		log.Fatalf("did not get postgres container: %v", err)
 	}
 	defer c.Container.Terminate(ctx)
 
@@ -40,7 +40,7 @@ func TestFindOne(t *testing.T) {
 
 	_, err = conn.ExecContext(ctx, "CREATE TABLE product (product_id text PRIMARY KEY, price_in_cents integer, title text, description text)")
 	if err != nil {
-		t.Fatal(err.Error())
+		log.Fatalf("did not execute: %v", err)
 	}
 
 	insertion, err := conn.Prepare("INSERT INTO product(product_id, price_in_cents, title, description) VALUES ('12345', 5000, 'Title test', 'Description test');")
@@ -50,6 +50,9 @@ func TestFindOne(t *testing.T) {
 	insertion2.Exec()
 	insertion3.Exec()
 
+	os.Exit(m.Run())
+}
+func TestFindOne(t *testing.T) {
 	tests := []struct {
 		ID          string
 		title       string
@@ -69,6 +72,31 @@ func TestFindOne(t *testing.T) {
 		assert.Equal(t, product.Title, test.title, "Assertion failure! We've got: "+product.Title+" for the product: "+test.ID)
 		assert.Equal(t, product.Description, test.description, "Assertion failure! We've got: "+product.Description+" for the product: "+test.ID)
 		assert.Equal(t, int64(product.PriceInCents), test.price, "Assertion failure! We've got: "+strPrice+" for the product: "+test.ID)
+	}
+}
+
+func TestFindAll(t *testing.T) {
+	expected := map[string]struct {
+		ID          string
+		title       string
+		description string
+		price       int64
+	}{
+		"12345":                                {"12345", "Title test", "Description test", 5000},
+		"1":                                    {"1", "0", "-1", 0},
+		"9325817d-f543-4718-9621-6d42d93d73f4": {"9325817d-f543-4718-9621-6d42d93d73f4", "product", "cool", 1002003004},
+	}
+
+	products := repository.FindAll("")
+
+	for _, product := range products {
+		v, found := expected[product.ID]
+
+		strPrice := strconv.FormatInt(product.PriceInCents, 10)
+		assert.Equal(t, true, found, "Assertion failure! We expected found the product: "+product.ID)
+		assert.Equal(t, v.title, product.Title, "Assertion failure! We've got: "+product.Title+" for the product: "+product.ID)
+		assert.Equal(t, v.description, product.Description, "Assertion failure! We've got: "+product.Description+" for the product: "+product.ID)
+		assert.Equal(t, int64(v.price), product.PriceInCents, "Assertion failure! We've got: "+strPrice+" for the product: "+product.ID)
 
 	}
 }
