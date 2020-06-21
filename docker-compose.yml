@@ -15,7 +15,7 @@ services:
     network_mode: host
 
   pd-product-service:
-    build: ./product-service
+    image: fredoliveirace/pd-product-service
     restart: always
     depends_on:
       - pd-postgres
@@ -25,7 +25,7 @@ services:
     network_mode: host
 
   pd-user-service:
-    build: ./user-service
+    image: fredoliveirace/pd-user-service
     restart: always
     depends_on:
       - pd-postgres
@@ -34,7 +34,7 @@ services:
     network_mode: host
 
   pd-discount-service:
-    build: ./discount-service
+    image: fredoliveirace/pd-discount-service
     restart: always
     depends_on:
       - pd-product-service
