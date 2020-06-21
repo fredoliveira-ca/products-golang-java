@@ -74,7 +74,7 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func TestPayment(t *testing.T) {
+func TestListAllProductWithoutDiscount(t *testing.T) {
 	req, err := http.Get("http://localhost:8001/product")
 	if err != nil {
 		log.Fatalf("did not execute: %v", err)
@@ -111,5 +111,9 @@ func TestPayment(t *testing.T) {
 		assert.Equal(t, int64(v.price), product.PriceInCents, "Assertion failure! We've got: "+strPrice+" instead of "+strPriceTest+" for the product: "+product.ID)
 
 	}
+
+}
+
+func TestListAllProductWithBirthdayDiscount(t *testing.T) {
 
 }

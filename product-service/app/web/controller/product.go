@@ -8,7 +8,7 @@ import (
 	repository "github.com/fredoliveira-ca/products-golang-java/product-service/data/repository"
 )
 
-// ListProducts is ..
+// ListProducts is the entrypoint to fetch all the products.
 func ListProducts(w http.ResponseWriter, r *http.Request) {
 	params := r.URL.Query()["user"]
 
