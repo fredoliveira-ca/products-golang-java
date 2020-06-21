@@ -46,3 +46,4 @@ curl --request GET \
 `
 4a07fb31-d908-411b-949e-6ae3effbe60b
 `
+> :warning: **According to the script, you're adding this user with birthday date equal today!**: See this on line 40 in the data.sql file! If you want to test it afterwards, please update the user.
