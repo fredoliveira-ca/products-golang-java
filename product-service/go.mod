@@ -10,6 +10,7 @@ require (
 	github.com/aymerick/raymond v2.0.2+incompatible // indirect
 	github.com/cenkalti/backoff/v3 v3.2.2 // indirect
 	github.com/containerd/continuity v0.0.0-20200413184840-d3ef23f19fbb // indirect
+	github.com/docker/go-connections v0.4.0
 	github.com/eknkc/amber v0.0.0-20171010120322-cdade1c07385 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/flosch/pongo2 v0.0.0-20200529170236-5abacdfa4915 // indirect
@@ -34,6 +35,7 @@ require (
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/ory/dockertest v3.3.5+incompatible
 	github.com/ory/dockertest/v3 v3.6.0 // indirect
+	github.com/pkg/errors v0.9.1
 	github.com/ryanuber/columnize v2.1.0+incompatible // indirect
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
@@ -48,7 +50,9 @@ require (
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	golang.org/x/net v0.0.0-20200602114024-627f9648deb9 // indirect
 	golang.org/x/sys v0.0.0-20200615200032-f1bc736245b1 // indirect
+	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013
 	google.golang.org/grpc v1.29.1
 	google.golang.org/protobuf v1.24.0
+	gotest.tools v0.0.0-20181223230014-1083505acf35
 	moul.io/http2curl v1.0.0 // indirect
 )

@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	_ "github.com/lib/pq"
 )
 
 const (
 	defaultHost = "localhost"
+	defaultPort = 5432
 	user        = "postgres"
 	password    = "admin"
 	dbname      = "productdb"
@@ -24,10 +26,14 @@ func ConnectDataBase() *sql.DB {
 	if os.Getenv("DB_HOST") != "" {
 		host = os.Getenv("DB_HOST")
 	}
+	port := defaultPort
+	if os.Getenv("DB_PORT") != "" {
+		port, _ = strconv.Atoi(os.Getenv("DB_PORT"))
+	}
 
 	connection := fmt.Sprintf(
 		"host=%s port=%d user=%s  password=%s dbname=%s sslmode=disable",
-		host, 5432, user, password, dbname,
+		host, port, user, password, dbname,
 	)
 
 	log.Println("Connecting database", connection)
