@@ -22,6 +22,7 @@ type Server struct {
 
 // RegisterServer sets up the gRPC server and waits for a connection.
 func RegisterServer() {
+	log.Println("Register gRPC user server.")
 	lis, err := net.Listen("tcp", userAddress)
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)

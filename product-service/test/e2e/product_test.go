@@ -76,7 +76,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestListAllProductWithoutDiscount(t *testing.T) {
-	req, err := http.Get("http://localhost:8001/product")
+	req, err := http.Get("http://localhost:8001/products")
 	if err != nil {
 		log.Fatalf("did not execute: %v", err)
 	}
@@ -116,7 +116,7 @@ func TestListAllProductWithoutDiscount(t *testing.T) {
 }
 
 func TestListAllProductWithBirthdayDiscount(t *testing.T) {
-	req, err := http.Get("http://localhost:8001/product?user=u23r-b1r7hday")
+	req, err := http.Get("http://localhost:8001/products?user=u23r-b1r7hday")
 	if err != nil {
 		log.Fatalf("did not execute: %v", err)
 	}
@@ -136,7 +136,7 @@ func TestListAllProductWithBirthdayDiscount(t *testing.T) {
 }
 
 func TestListAllProductWithNoDiscount(t *testing.T) {
-	req, err := http.Get("http://localhost:8001/product?user=0rd1n4ry-u23r")
+	req, err := http.Get("http://localhost:8001/products?user=0rd1n4ry-u23r")
 	if err != nil {
 		log.Fatalf("did not execute: %v", err)
 	}

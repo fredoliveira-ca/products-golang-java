@@ -8,5 +8,5 @@ import (
 
 //LoadRoutes represents the available routes.
 func LoadRoutes() {
-	http.HandleFunc("/product", controller.ListProducts)
+	http.HandleFunc("/products", controller.ListProducts)
 }
