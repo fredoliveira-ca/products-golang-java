@@ -6,6 +6,7 @@ services:
     restart: always
     environment:
       POSTGRES_DB: "productdb"
+      POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "admin"
     volumes:
       - ./schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
