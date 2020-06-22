@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"log"
-
 	db "github.com/fredoliveira-ca/products-golang-java/product-service/app/config"
 	grpc "github.com/fredoliveira-ca/products-golang-java/product-service/app/grpc/client"
 	domain "github.com/fredoliveira-ca/products-golang-java/product-service/domain"
@@ -42,14 +40,14 @@ func FindAll(userID string) []domain.Product {
 
 		discount := grpc.CalculateDiscount(product.ID, userID)
 		product.Discount = domain.Discount{Pct: 0, ValueInCents: 0}
-		
+
 		if discount != nil {
 			product.Discount = domain.Discount{
 				Pct:          discount.Pct,
 				ValueInCents: discount.ValueInCents,
 			}
 		}
-		
+
 		products = append(products, product)
 	}
 
@@ -81,6 +79,6 @@ func FindOne(id string) domain.Product {
 		product.Description = description
 		product.PriceInCents = price
 	}
-	
+
 	return product
 }
