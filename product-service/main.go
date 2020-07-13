@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/fredoliveira-ca/products-golang-java/product-service/app/grpc/server"
@@ -12,5 +13,5 @@ func main() {
 
 	route.LoadRoutes()
 
-	http.ListenAndServe(":8001", nil)
+	log.Fatal(http.ListenAndServe(":8001", nil))
 }
